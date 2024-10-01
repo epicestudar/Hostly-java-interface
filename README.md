@@ -36,116 +36,23 @@ A nossa empresa chamada Hostly, dedicada a inovar no campo da gestão de serviç
 O sistema de gerenciamento de reservas será desenvolvido utilizando Node.js para a API e Java para a interface, com MongoDB como banco de dados. A solução visa proporcionar uma experiência de usuário intuitiva, com recursos para cadastro e gerenciamento de quartos, reservas, emissão de contratos e relatórios financeiros.
 <br><br><br><br><br>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Objetivos SMART" alt="Typing SVG" /></a>
-
-- **Específicos:**
-  1. Criar uma `API RESTful` com Node.js que suporte operações CRUD (Criar, Ler, Atualizar, Deletar) para enquetes, até o final da segunda semana.
-  2. Implementar um `sistema de autenticação` de usuários utilizando JWT até o final da terceira semana.
-  3. Configurar e integrar o banco de dados MongoDB, permitindo o `armazenamento seguro` e eficiente das enquetes dos usuários, até o final da quarta semana.
-  4. Desenvolver a interface de usuário em `React e Next`, permitindo a criação e gerenciamento de enquetes, até o final da quinta semana.
-  5. Integrar um sistema de `notificações em tempo real` para alertar os usuários sobre atualizações ou novos votos em suas enquetes, até o final da sexta semana.
-  6. Implementar testes automatizados de integração para garantir a `consistência das operações CRUD`, até o final da sétima semana.
-
-- **Mensuráveis:**
-  1. Alcançar uma base de 100 usuários registrados na plataforma dentro do primeiro mês após o lançamento.
-  2. Garantir que 90% das operações CRUD sejam concluídas com sucesso e sem erros no primeiro mês de operação.
-  3. Obter uma avaliação de satisfação do usuário de pelo menos 4,5 em uma escala de 1 a 5 após o segundo mês de uso da plataforma.
-  4. Assegurar que a aplicação suporte pelo menos 500 acessos simultâneos sem degradação de performance.
- 
-- **Relevantes:**
-  1. Garantir que a plataforma seja escalável e segura para suportar o crescimento constante, garantindo que a `infraestrutura cloud` possa ser ajustada conforme necessário.
-  2. Desenvolver uma experiência de usuário fluida e intuitiva, garantindo que a interface de criação de enquetes seja fácil de usar tanto em dispositivos móveis quanto em desktops.
-  3. Introduzir um sistema de feedback constante, permitindo que os usuários sugiram melhorias e relatem problemas diretamente da interface da plataforma.    
- <br><br><br><br><br>
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Cronograma" alt="Typing SVG" /></a>
-
-```mermaid
-gantt
-    title Cronograma do Projeto de Enquete
-    dateFormat  YYYY-MM-DD
-
-    section Semana 1-2: Definição dos Requisitos e Configuração do Ambiente
-    Reunião inicial          :a1, 2024-09-10, 3d
-    Configuração do ambiente :a2, 2024-09-13, 4d
-    Definição das entidades  :a3, 2024-09-17, 3d
-    Criação de wireframes    :a4, 2024-09-20, 4d
-
-    section Semana 3-4: Desenvolvimento do Backend e API
-    Desenvolvimento da API   :b1, 2024-09-25, 4d
-    Rotas CRUD para enquetes :b2, 2024-09-29, 5d
-    Testes iniciais do backend :b3, 2024-10-04, 5d
-
-    section Semana 5-6: Desenvolvimento do Frontend
-    Criação do frontend      :c1, 2024-10-09, 4d
-    Integração com a API     :c2, 2024-10-13, 4d
-    Implementação da autenticação :c3, 2024-10-17, 6d
-
-    section Semana 7-8: Testes e Ajustes Finais
-    Testes de integração     :d1, 2024-10-23, 4d
-    Funcionalidades adicionais :d2, 2024-10-27, 4d
-    Testes de desempenho e segurança :d3, 2024-10-31, 6d
-
-    section Semana 9: Finalização e Entrega
-    Revisão final e documentação :e1, 2024-11-06, 2d
-    Apresentação e entrega    :e2, 2024-11-08, 2d
-
-
-```
-<br><br><br><br><br>
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Análises de Risco" alt="Typing SVG" /></a>
-
-1. **Atrasos no Desenvolvimento: Riscos de Complexidade e Mudança de Requisitos:** O desenvolvimento de uma plataforma de enquetes interativas envolve várias funcionalidades interdependentes, como o sistema de login/cadastro, criação de enquetes, e funcionalidades de votação. O mal gerenciamento do tempo e a subestimação da complexidade técnica podem resultar em atrasos significativos, especialmente se surgirem mudanças nos requisitos ou dificuldades técnicas inesperadas, como a necessidade de ajustes em bibliotecas externas ou problemas de desempenho em consultas ao banco de dados.
-   
-   **Mitigação:**
-Planejamento Detalhado e Metas Curto-Prazo: Defina claramente os requisitos desde o início, documentando-os de forma detalhada. Crie um cronograma com marcos bem definidos e revisões periódicas.
-Gestão de Mudanças: Implemente um processo formal de controle de mudanças, onde qualquer nova solicitação de alteração deve ser discutida e aprovada antes de ser incorporada ao projeto.
-Divisão do Desenvolvimento: Divida o desenvolvimento em pequenas entregas incrementais. Cada funcionalidade deve ser desenvolvida, testada e integrada em ciclos curtos.
-Buffer para Imprevistos: Alocar tempo extra no cronograma para lidar com problemas técnicos ou mudanças inesperadas.
-Ferramentas de Monitoramento: Utilize ferramentas de gestão de projetos, como Jira ou Trello, para acompanhar o progresso e manter o controle das tarefas.
-
-2. **Desafios de Integração: Riscos de Inconsistência e Sincronização Entre Frontend e Backend:** A integração entre o frontend (React/Next.js) e o backend (Node.js) pode enfrentar desafios significativos, especialmente em relação ao fluxo de autenticação e à manipulação das enquetes e votos. A comunicação entre o frontend e as APIs precisa ser sincronizada de maneira eficiente, especialmente na gestão de sessões, autenticação JWT e atualização de dados em tempo real, para garantir uma experiência de usuário fluida.
-   
-   **Mitigação:**
-Padronização de APIs: Garanta que as APIs estejam bem documentadas e sigam padrões consistentes, como o uso de REST ou GraphQL. Isso facilita a integração e a comunicação entre frontend e backend.
-Testes Automatizados: Implemente testes automatizados para o frontend e o backend. Testes de integração garantirão que os endpoints da API estejam funcionando corretamente e que a comunicação com o frontend seja sincronizada.
-Gestão de Sessões: Utilize um sistema de gestão de sessão robusto, como JWT com renovação automática de tokens, garantindo que a autenticação funcione corretamente e sem problemas de sincronização.
-Simulações de Cenários de Uso: Execute simulações de diferentes cenários de interação entre frontend e backend para garantir que a manipulação de enquetes e votos aconteça sem inconsistências.
-WebSockets ou SSE (Server-Sent Events): Para atualizações de dados em tempo real, considere usar WebSockets ou SSE, que permitem manter o frontend sincronizado com as atualizações feitas no backend.
-
-3. **Segurança dos Dados: Vulnerabilidades em Autenticação, Proteção de Votos e Privacidade de Usuários:** A segurança dos dados é uma preocupação central em plataformas interativas. Com a funcionalidade de login/cadastro, é fundamental garantir que as senhas dos usuários sejam armazenadas com segurança, que a autenticação seja robusta (ex: usando JWT) e que as enquetes e votos sejam protegidos contra manipulação externa (como múltiplos votos fraudulentos ou ataques de injeção). Além disso, dados pessoais dos usuários, como e-mails, devem ser protegidos contra vazamentos.
-   
-   **Mitigação:**
-Criptografia de Senhas: Armazene as senhas dos usuários utilizando algoritmos de hash seguros, como bcrypt ou Argon2, e implemente políticas de senha forte.
-Autenticação Segura (JWT): Use tokens JWT com expiração curta e renovações controladas. Assegure-se de usar HTTPS para a troca segura de tokens e dados sensíveis.
-Proteção contra Votos Fraudulentos: Implemente restrições para impedir múltiplos votos por usuário, como limitar um voto por IP, ou usar cookies/sessões junto ao JWT para garantir unicidade. Também é útil usar mecanismos de validação, como captchas, para evitar automação de votos.
-Proteção contra Ataques de Injeção: Valide e sanitize todas as entradas de usuários para proteger a aplicação contra SQL injection e XSS. Use bibliotecas e frameworks que oferecem proteção contra essas vulnerabilidades, como o mongoose (MongoDB) e express-validator.
-Anonimização de Dados: Para garantir a privacidade dos usuários, anonimize dados sensíveis nas enquetes, limitando o acesso a informações pessoais apenas para o necessário.
-Auditoria e Logs: Implemente mecanismos de auditoria e logs para monitorar atividades suspeitas, como tentativas de acesso não autorizado ou votos suspeitos, e responda rapidamente a ameaças.
-
-<br><br><br><br><br>
-
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Recursos" alt="Typing SVG"/></a>
 
 **Equipe:**
 - 1 Gerente de Projetos
-- 3 Desenvolvedores Full-Stack (Node.js, React e Next)
-- 2 Designer UI/UX
+- 3 Desenvolvedores Full-Stack (Node.js e Java)
 - 1 Administrador de Banco de Dados
 - 1 Especialista em Segurança
 
 **Tecnologias:**
-- **Node.js** (Backend)
-- **React e Next** (Frontend)
+- **Node.js** (API)
+- **Java Swing** (Interface)
 - **MongoDB** (Banco de Dados)
-- **JWT** (Autenticação)
 - **Git/GitHub** (Controle de Versão)
 
 **Ferramentas de Gestão:**
 - Trello para gerenciamento de tarefas
 - Slack para comunicação interna
-- Figma para design de interfaces
 - Mermaid para montagem dos diagramas
 
 <br><br><br><br><br>
@@ -154,48 +61,73 @@ Auditoria e Logs: Implemente mecanismos de auditoria e logs para monitorar ativi
 
 ```mermaid
 classDiagram
-    class Usuario {
+    class Adm {
         +int id
-        +string nome
         +string email
         +string senha
-        +string cidade
-        +string fotoDePerfil
-        +obterInformaçõesDoUsuario()
-        +fazerLogin()
-        +editarUsuario()
-        +apagarUsuario()
+        +post()
     }
 
-    class Enquete {
+    class Hospede {
         +int id
-        +string título
-        +string[] opções
-        +string descrição
-        +enum categoria
-        +string imagem
-        +date dataDeCriação
-        +int usuarioId
-        +create()
-        +read()
-        +edit()
+        +string nome
+        +date data_nascimento
+        +string telefone
+        +string cpf
+        +string email
+        +string senha
+        +post()
+        +get()
+        +put()
         +delete()
     }
 
-    class Votacao {
+    class Quarto {
         +int id
-        +int enqueteId
-        +int usuarioId
-        +string[i] opçãoVotada
-        +date dataQueVotou
-        +read()
-        +create()
-        +edit()
+        +int numero_quarto
+        +string tipo_quarto
+        +int andar
+        +string status
+        +float preco
+        +int capacidade
+        +post()
+        +get()
+        +put()
         +delete()
     }
 
-    Usuario "1" -- "0..*" Enquete : "cria"
-    Enquete "1" -- "0..*" Votacao : "possui"
+    class Reservas {
+        +int id
+        +int fk_numero_quarto
+        +string fk_cpf
+        +int quantidade_de_diarias
+        +date data_check_in
+        +date data_check_out
+        +string status_reserva
+        +date data_reserva
+        +post()
+        +get()
+        +put()
+        +delete()
+    }
+
+    class Pagamento {
+        +int id
+        +int fk_reserva
+        +date data_pagamento
+        +float valor_pago
+        +string metodo_pagamento
+        +post()
+        +get()
+        +put()
+        +delete()
+    }
+
+    Adm "1" -- "0..*" Quarto : "gerencia"
+    Hospede "1" -- "0..*" Reservas : "realiza"
+    Quarto "1" -- "0..*" Reservas : "é reservado em"
+    Reservas "1" -- "0..1" Pagamento : "possui"
+
 
 ```
 <br><br><br><br><br>
