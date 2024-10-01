@@ -11,10 +11,10 @@ O sistema será um gerenciamento de reservas de hotel, no qual o funcionário po
 </p>
 
 <p align="center">
-   <img src="https://img.shields.io/badge/API-FEITA-BLUE?style=for-the-badge" alt="backend" />
-  <img src="https://img.shields.io/badge/Documentação-FEITA-blue?style=for-the-badge" alt="documentação" />
-  <img src="https://img.shields.io/badge/Protótipos-FEITO-blue?style=for-the-badge" alt="mobile" />
-  <img src="https://img.shields.io/badge/Frontend-FEITO-BLUE?style=for-the-badge" alt="site" />
+   <img src="https://img.shields.io/badge/API-FAZENDO-RED?style=for-the-badge" alt="backend" />
+  <img src="https://img.shields.io/badge/Documentação-FAZENDO-RED?style=for-the-badge" alt="documentação" />
+  <img src="https://img.shields.io/badge/Manual-FAZENDO-RED?style=for-the-badge" alt="mobile" />
+  <img src="https://img.shields.io/badge/Interface-FAZENDO-RED?style=for-the-badge" alt="site" />
 </p>
 <hr>
 <br>
