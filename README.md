@@ -20,7 +20,7 @@ O sistema será um gerenciamento de reservas de hotel, no qual o funcionário po
 <br>
 <br><br><br>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Plataforma de Enquetes" alt="Typing SVG" /></a>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Gerenciamento de Reservas" alt="Typing SVG" /></a>
 
 ## Apresentação do Projeto: Desenvolvimento de Aplicação sobre Plataforma de Enquetes Interativas
 
