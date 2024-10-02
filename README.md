@@ -135,24 +135,30 @@ classDiagram
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Diagrama de Uso" alt="Typing SVG" /></a>
 ```mermaid
 flowchart TD
-    U[Usuário] -->|Criar Conta| A(Registrar-se)
+    H[Hóspede] -->|Criar Conta| A(Registrar-se)
     A -->|Fazer Login| B(Fazer Login)
-    B -->|Acessar Plataforma| C(Plataforma de Enquetes)
+    B -->|Acessar Sistema| C(Sistema de Reservas)
+
+    C -->|Buscar Quartos Disponíveis| D(Visualizar Quartos Disponíveis)
+    D -->|Selecionar Quarto| E(Escolher Quarto e Ver Detalhes)
+    E -->|Solicitar Reserva| F(Selecionar Datas e Confirmar Reserva)
     
-    C -->|Criar Enquete| D(Criar Nova Enquete)
-    D -->|Adicionar Opções| E(Adicionar Opções à Enquete)
+    F -->|Efetuar Pagamento| G(Realizar Pagamento da Reserva)
+    G -->|Confirmar| H2(Reserva Confirmada)
+
+    A2[Administrador] -->|Cadastrar Quartos| J(Cadastrar Novos Quartos)
+    J -->|Definir Atributos do Quarto| K(Definir Número, Andar, Preço, Capacidade, etc.)
     
-    C -->|Votar em Enquete| F(Votar em Enquete Existente)
-    F -->|Selecionar Opção| G(Escolher Opção e Confirmar Voto)
+    A2 -->|Gerenciar Quartos| L(Gerenciar Quartos Existentes)
+    L -->|Editar Quarto| M(Editar Detalhes do Quarto)
+    L -->|Excluir Quarto| N(Excluir Quarto)
+
+    H -->|Visualizar Reservas| O(Ver Minhas Reservas Atuais)
+    O -->|Cancelar Reserva| P(Cancelar Reserva)
     
-    C -->|Acompanhar Resultados| H(Visualizar Resultados das Enquetes)
-    
-    I[Criador da Enquete] -->|Gerenciar Enquetes| J(Gerenciar Enquetes que ele criou)
-    J -->|Editar Enquete| K(Editar Detalhes da Enquete)
-    J -->|Excluir Enquete| L(Excluir Enquete)
-    
-    U -->|Editar Perfil| M(Atualizar Informações de Usuário)
-    U -->|Excluir Conta| N(Excluir Conta)
+    H -->|Editar Perfil| Q(Atualizar Informações de Hóspede)
+    H -->|Excluir Conta| R(Excluir Conta)
+
 
 ```
 <br><br><br><br><br>
@@ -160,24 +166,35 @@ flowchart TD
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Diagrama de Fluxo" alt="Typing SVG" /></a>
 ```mermaid
 flowchart TD
-    Start([Início]) --> |Acessa Plataforma| A[Fazer Login]
-    A -->|Login Sucesso| B[Dashboard de Enquetes]
-    A -->|Login Falhou| C[Exibir Erro de Login]
-    C -->|Tentar Novamente| A
+    Start([Início]) -->|Acesso ao Sistema| A[Fazer Login]
+    A -->|Hóspede| B{Login Bem-sucedido?}
+    B -- Sim --> C[Acessar Sistema de Reservas]
+    B -- Não --> D[Exibir Erro e Tentar Novamente]
+
+    C -->|Ver Quartos Disponíveis| E[Visualizar Quartos]
+    E --> F{Quartos Disponíveis?}
+    F -- Sim --> G[Selecionar Quarto]
+    F -- Não --> H[Exibir Mensagem: Sem Quartos Disponíveis]
     
-    B -->|Criar Nova Enquete| D[Criar Enquete]
-    D -->|Inserir Título, Opções e Descrição| E[Confirmar Criação]
-    E -->|Sucesso| F[Exibir Enquete no Dashboard]
+    G --> I[Definir Datas de Check-in e Check-out]
+    I --> J[Confirmar Reserva]
+    J --> K{Efetuar Pagamento?}
+    K -- Sim --> L[Escolher Método de Pagamento]
+    L --> M[Efetuar Pagamento]
+    M --> O[Reserva Confirmada]
     
-    B -->|Votar em Enquete| G[Selecionar Enquete]
-    G -->|Escolher Opção| H[Confirmar Voto]
-    H -->|Voto Registrado| I[Atualizar Resultados]
-    
-    B -->|Acompanhar Resultados| J[Visualizar Resultados em Tempo Real]
-    
-    B -->|Gerenciar Enquetes| K[Editar ou Excluir Enquete]
-    K -->|Confirmar Alterações| F
-    
-    End([Fim])
+    O --> End([Fim])
+
+    C -->|Gerenciar Reservas| P[Visualizar Minhas Reservas]
+    P --> Q[Cancelar Reserva]
+    Q --> R[Reserva Cancelada]
+
+    A -->|Administrador| S{Login Bem-sucedido?}
+    S -- Sim --> T[Dashboard de Administração]
+    T --> U[Cadastrar Novo Quarto]
+    T --> V[Editar Quarto]
+    T --> W[Excluir Quarto]
+    S -- Não --> D
+
 
 ```
