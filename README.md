@@ -1,7 +1,7 @@
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Contexto do Projeto" alt="Typing SVG" /></a>
 ### Contexto Inicial
 **Gerenciamento de Reservas de Hotel:**
-O sistema será um gerenciamento de reservas de hotel, no qual o administrador poderá cadastrar quartos e funcionários, gerenciar reservas e acessar extratos de emissão fiscal, enquanto que o hóspede poderá solicitar a sua reserva em quartos disponíveis e efetuar o pagamento após realizar o seu cadastro.
+O sistema será um gerenciamento de reservas de hotel, no qual o administrador poderá cadastrar hóspedes e funcionários, gerenciar reservas e acessar extratos de emissão fiscal, enquanto que o hóspede poderá solicitar a sua reserva em quartos disponíveis e efetuar o pagamento.
 
 <br>
 <br>
@@ -26,7 +26,7 @@ O sistema será um gerenciamento de reservas de hotel, no qual o administrador p
 
 ### Visão Geral do Projeto
 **Objetivo:**
-Desenvolver um sistema para gerenciamento de reservas de hotel, onde o administrador poderá cadastrar quartos e funcionários, gerenciar reservas e acessar extratos de emissão fiscal. Hóspedes poderão solicitar reservas em quartos disponíveis e efetuar o pagamento. A aplicação utilizará tecnologias modernas e práticas de mercado, garantindo segurança, escalabilidade e uma experiência de usuário fluida por meio de Java Swing para a interface administrativa e Spring Boot para a API, com MongoDB como banco de dados.
+Desenvolver um sistema para gerenciamento de reservas de hotel, onde o administrador poderá cadastrar hóspedes e quartos, gerenciar reservas e acessar extratos de emissão fiscal. Hóspedes poderão solicitar reservas em quartos disponíveis e efetuar o pagamento. A aplicação utilizará tecnologias modernas e práticas de mercado, garantindo segurança, escalabilidade e uma experiência de usuário fluida por meio de Java Swing para a interface administrativa e Spring Boot para a API, com MongoDB como banco de dados.
 
 **Por Que Este Projeto?**
 A nossa empresa chamada Hostly, dedicada a inovar no campo da gestão de serviços, está em processo de criação de um sistema de gerenciamento de reservas de hotel. Este projeto visa proporcionar uma experiência eficiente tanto para os funcionários quanto para os hóspedes, facilitando o processo de reserva e gerenciamento dos quartos. Com o objetivo de transformar a forma como os hotéis gerenciam suas reservas e atendem aos hóspedes, estamos desenvolvendo uma solução tecnológica avançada que ofereça uma interface amigável e funcionalidades robustas.
@@ -61,25 +61,11 @@ O sistema de gerenciamento de reservas será desenvolvido utilizando Spring Boot
 
 ```mermaid
 classDiagram
-    class Adm {
+    class Administrador {
         +int id
         +string email
         +string senha
         +post()
-    }
-
-    class Funcionario {
-        +int id
-        +string nome
-        +string cpf
-        +string telefone
-        +string email
-        +string cargo
-        +float salario
-        +post()
-        +get()
-        +put()
-        +delete()
     }
 
     class Hospede {
@@ -137,8 +123,8 @@ classDiagram
         +delete()
     }
 
-    Adm "1" -- "0..*" Funcionario : "gerencia"
-    Adm "1" -- "0..*" Quarto : "gerencia"
+    Administrador "1" -- "0..*" Hospede : "gerencia"
+    Administrador "1" -- "0..*" Quarto : "gerencia"
     Hospede "1" -- "0..*" Reservas : "realiza"
     Quarto "1" -- "0..*" Reservas : "é reservado em"
     Reservas "1" -- "0..1" Pagamento : "possui"
@@ -149,15 +135,13 @@ classDiagram
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Diagrama de Uso" alt="Typing SVG" /></a>
 ```mermaid
 flowchart TD
-    H[Hóspede] -->|Criar Conta| A(Registrar-se)
-    A -->|Fazer Login| B(Fazer Login)
+    H[Hóspede] -->|Fazer Login| B(Fazer Login)
     B -->|Acessar Sistema| C(Sistema de Reservas)
-
-    C -->|Buscar Quartos Disponíveis| D(Visualizar Quartos Disponíveis)
+    
+    C -->|Buscar Quartos Disponíveis| D(Visualizar Quartos)
     D -->|Selecionar Quarto| E(Escolher Quarto e Ver Detalhes)
     E -->|Solicitar Reserva| F(Selecionar Datas e Confirmar Reserva)
-    
-    F -->|Efetuar Pagamento| G(Realizar Pagamento da Reserva)
+    F -->|Efetuar Pagamento| G(Realizar Pagamento)
     G -->|Confirmar| H2(Reserva Confirmada)
 
     A2[Administrador] -->|Cadastrar Quartos| J(Cadastrar Novos Quartos)
@@ -166,17 +150,18 @@ flowchart TD
     A2 -->|Gerenciar Quartos| L(Gerenciar Quartos Existentes)
     L -->|Editar Quarto| M(Editar Detalhes do Quarto)
     L -->|Excluir Quarto| N(Excluir Quarto)
-
-    A2 -->|Gerenciar Funcionários| S(Gerenciar Funcionários)
-    S -->|Cadastrar Funcionário| T(Adicionar Novo Funcionário)
-    S -->|Editar Funcionário| U(Editar Detalhes do Funcionário)
-    S -->|Excluir Funcionário| V(Excluir Funcionário)
-
+    
+    A2 -->|Cadastrar Hóspede| X(Cadastrar Hóspede)
+    A2 -->|Gerenciar Hóspede| Y(Gerenciar Hóspede Existente)
+    
+    A2 -->|Ver Reservas| Z(Visualizar Reservas)
+    Z -->|Ver Pagamentos| W(Emissões de Pagamento)
+    
     H -->|Visualizar Reservas| O(Ver Minhas Reservas Atuais)
     O -->|Cancelar Reserva| P(Cancelar Reserva)
     
     H -->|Editar Perfil| Q(Atualizar Informações de Hóspede)
-    H -->|Excluir Conta| R(Excluir Conta)
+
 
 ```
 <br><br><br><br><br>
@@ -214,12 +199,14 @@ flowchart TD
     T --> V[Editar Quarto]
     T --> W[Excluir Quarto]
     
-    T --> X[Gerenciar Funcionários]
-    X --> Y[Cadastrar Funcionário]
-    X --> Z[Editar Funcionário]
-    X --> AA[Excluir Funcionário]
-
+    T --> X[Gerenciar Hóspedes]
+    X --> Y[Cadastrar Hóspede]
+    X --> Z[Editar Hóspede]
+    X --> AA[Excluir Hóspede]
+    
+    T --> AB[Visualizar Reservas]
+    AB --> AC[Emitir Pagamento]
+    
     S -- Não --> D
-
 
 ```
