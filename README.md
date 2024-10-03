@@ -1,7 +1,7 @@
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Contexto do Projeto" alt="Typing SVG" /></a>
 ### Contexto Inicial
 **Gerenciamento de Reservas de Hotel:**
-O sistema será um gerenciamento de reservas de hotel, no qual o funcionário poderá cadastrar quartos, gerenciar reservas e ter acesso aos extratos de emissão fiscal, enquanto que o hóspede poderá solicitar a sua reserva em quartos disponíveis caso preenche os requisitos necessários.
+O sistema será um gerenciamento de reservas de hotel, no qual o administrador poderá cadastrar quartos e funcionários, gerenciar reservas e acessar extratos de emissão fiscal, enquanto que o hóspede poderá solicitar a sua reserva em quartos disponíveis e efetuar o pagamento após realizar o seu cadastro.
 
 <br>
 <br>
@@ -26,27 +26,27 @@ O sistema será um gerenciamento de reservas de hotel, no qual o funcionário po
 
 ### Visão Geral do Projeto
 **Objetivo:**
-Desenvolver um sistema para gerenciamento de reservas de hotel, onde os funcionários poderão cadastrar quartos, gerenciar reservas e acessar extratos de emissão fiscal. Hóspedes poderão solicitar reservas em quartos disponíveis, atendendo aos requisitos necessários. A aplicação utilizará tecnologias modernas e práticas de mercado, garantindo segurança, escalabilidade e uma experiência de usuário fluida por meio de Java para a interface e Node.js para a API, com MongoDB como banco de dados.
+Desenvolver um sistema para gerenciamento de reservas de hotel, onde o administrador poderá cadastrar quartos e funcionários, gerenciar reservas e acessar extratos de emissão fiscal. Hóspedes poderão solicitar reservas em quartos disponíveis e efetuar o pagamento. A aplicação utilizará tecnologias modernas e práticas de mercado, garantindo segurança, escalabilidade e uma experiência de usuário fluida por meio de Java Swing para a interface administrativa e Spring Boot para a API, com MongoDB como banco de dados.
 
 **Por Que Este Projeto?**
 A nossa empresa chamada Hostly, dedicada a inovar no campo da gestão de serviços, está em processo de criação de um sistema de gerenciamento de reservas de hotel. Este projeto visa proporcionar uma experiência eficiente tanto para os funcionários quanto para os hóspedes, facilitando o processo de reserva e gerenciamento dos quartos. Com o objetivo de transformar a forma como os hotéis gerenciam suas reservas e atendem aos hóspedes, estamos desenvolvendo uma solução tecnológica avançada que ofereça uma interface amigável e funcionalidades robustas.
 <br><br><br><br><br>
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Escopo" alt="Typing SVG" /></a>
 
-O sistema de gerenciamento de reservas será desenvolvido utilizando Node.js para a API e Java para a interface, com MongoDB como banco de dados. A solução visa proporcionar uma experiência de usuário intuitiva, com recursos para cadastro e gerenciamento de quartos, reservas, emissão de contratos e relatórios financeiros.
+O sistema de gerenciamento de reservas será desenvolvido utilizando Spring Boot para a API e Java Swing para a interface administrativa, com MongoDB como banco de dados. A solução visa proporcionar uma experiência de usuário intuitiva, com recursos para cadastro e gerenciamento de quartos, reservas, emissão de contratos e relatórios financeiros.
 <br><br><br><br><br>
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Recursos" alt="Typing SVG"/></a>
 
 **Equipe:**
 - 1 Gerente de Projetos
-- 3 Desenvolvedores Full-Stack (Node.js e Java)
+- 3 Desenvolvedores Full-Stack (Spring Boot e Java)
 - 1 Administrador de Banco de Dados
 - 1 Especialista em Segurança
 
 **Tecnologias:**
-- **Node.js** (API)
-- **Java Swing** (Interface)
+- **Spring Boot** (API e Interface do Usuário)
+- **Java Swing** (Interface Administrativa)
 - **MongoDB** (Banco de Dados)
 - **Git/GitHub** (Controle de Versão)
 
@@ -66,6 +66,20 @@ classDiagram
         +string email
         +string senha
         +post()
+    }
+
+    class Funcionario {
+        +int id
+        +string nome
+        +string cpf
+        +string telefone
+        +string email
+        +string cargo
+        +float salario
+        +post()
+        +get()
+        +put()
+        +delete()
     }
 
     class Hospede {
@@ -123,11 +137,11 @@ classDiagram
         +delete()
     }
 
+    Adm "1" -- "0..*" Funcionario : "gerencia"
     Adm "1" -- "0..*" Quarto : "gerencia"
     Hospede "1" -- "0..*" Reservas : "realiza"
     Quarto "1" -- "0..*" Reservas : "é reservado em"
     Reservas "1" -- "0..1" Pagamento : "possui"
-
 
 ```
 <br><br><br><br><br>
@@ -153,12 +167,16 @@ flowchart TD
     L -->|Editar Quarto| M(Editar Detalhes do Quarto)
     L -->|Excluir Quarto| N(Excluir Quarto)
 
+    A2 -->|Gerenciar Funcionários| S(Gerenciar Funcionários)
+    S -->|Cadastrar Funcionário| T(Adicionar Novo Funcionário)
+    S -->|Editar Funcionário| U(Editar Detalhes do Funcionário)
+    S -->|Excluir Funcionário| V(Excluir Funcionário)
+
     H -->|Visualizar Reservas| O(Ver Minhas Reservas Atuais)
     O -->|Cancelar Reserva| P(Cancelar Reserva)
     
     H -->|Editar Perfil| Q(Atualizar Informações de Hóspede)
     H -->|Excluir Conta| R(Excluir Conta)
-
 
 ```
 <br><br><br><br><br>
@@ -167,6 +185,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start([Início]) -->|Acesso ao Sistema| A[Fazer Login]
+    
     A -->|Hóspede| B{Login Bem-sucedido?}
     B -- Sim --> C[Acessar Sistema de Reservas]
     B -- Não --> D[Exibir Erro e Tentar Novamente]
@@ -194,6 +213,12 @@ flowchart TD
     T --> U[Cadastrar Novo Quarto]
     T --> V[Editar Quarto]
     T --> W[Excluir Quarto]
+    
+    T --> X[Gerenciar Funcionários]
+    X --> Y[Cadastrar Funcionário]
+    X --> Z[Editar Funcionário]
+    X --> AA[Excluir Funcionário]
+
     S -- Não --> D
 
 
