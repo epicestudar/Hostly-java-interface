@@ -62,20 +62,21 @@ O sistema de gerenciamento de reservas será desenvolvido utilizando Spring Boot
 ```mermaid
 classDiagram
     class Administrador {
-        +int id
+        +long id_administrador
         +string email
         +string senha
         +post()
     }
 
     class Hospede {
-        +int id
+        +long id_hospede
         +string nome
         +date data_nascimento
         +string telefone
         +string cpf
         +string email
         +string senha
+        +list<Reserva> reservas
         +post()
         +get()
         +put()
@@ -83,13 +84,13 @@ classDiagram
     }
 
     class Quarto {
-        +int id
-        +int numero_quarto
-        +string tipo_quarto
-        +int andar
-        +string status
-        +float preco
-        +int capacidade
+        +int id_quarto
+        +string codigo_quarto
+        +enum tipo_quarto
+        +integer capacidade_quarto
+        +double valor_quarto
+        +enum status
+        +list<Reserva> reservas
         +post()
         +get()
         +put()
@@ -97,13 +98,14 @@ classDiagram
     }
 
     class Reservas {
-        +int id
-        +int fk_numero_quarto
-        +string fk_cpf
-        +int quantidade_de_diarias
-        +date data_check_in
-        +date data_check_out
-        +string status_reserva
+        +long id_reserva
+        +foreignkey codigo_quarto
+        +foreignkey cpf_hospede
+        +foreignkey nome_hospede
+        +integer quantidade_diarias
+        +localdate data_check_in
+        +localdate data_check_out
+        +enum status
         +date data_reserva
         +post()
         +get()
@@ -112,15 +114,17 @@ classDiagram
     }
 
     class Pagamento {
-        +int id
-        +int fk_reserva
-        +date data_pagamento
-        +float valor_pago
-        +string metodo_pagamento
+        +long id_pagamento
+        +foreignkey id_reserva
+        +foreignkey cpf_hospede
+        +localdate data_pagamento
+        +double valor_pago
+        +enum metodo_pagamento
         +post()
         +get()
         +put()
         +delete()
+        +calcularValorPagamento()
     }
 
     Administrador "1" -- "0..*" Hospede : "gerencia"
