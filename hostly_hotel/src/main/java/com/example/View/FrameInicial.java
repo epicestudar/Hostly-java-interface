@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class FrameInicial extends JFrame {
     private JButton loginAdminButton;
@@ -121,25 +125,96 @@ class LoginHospedeFrame extends JFrame {
 
         setVisible(true);
 
-        // Adicionando ação do botão de login
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String email = emailField.getText();
                 String senha = new String(senhaField.getPassword());
-                // Lógica de autenticação para o hóspede
-                JOptionPane.showMessageDialog(null, "Hóspede logado com sucesso!");
+        
+                try {
+                    // Montar o JSON com as credenciais
+                    String jsonInputString = String.format("{\"email\":\"%s\", \"senha\":\"%s\"}", email, senha);
+        
+                    // Fazer a requisição POST para o endpoint de login
+                    URL url = new URL("http://localhost:8080/api/hospedes/login");
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Content-Type", "application/json; utf-8");
+                    con.setRequestProperty("Accept", "application/json");
+                    con.setDoOutput(true);
+        
+                    // Enviar o JSON com as credenciais
+                    try (OutputStream os = con.getOutputStream()) {
+                        byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                        os.write(input, 0, input.length);
+                    }
+        
+                    // Verificar a resposta do servidor
+                    int responseCode = con.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        JOptionPane.showMessageDialog(null, "Login bem-sucedido!");
+                        // Redirecionar para o dashboard ou nova tela
+                        new DashboardFrame(); // Exemplo de redirecionamento para dashboard
+                        dispose(); // Fecha a tela de login
+                    } else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                        JOptionPane.showMessageDialog(null, "Credenciais inválidas");
+                    } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                        JOptionPane.showMessageDialog(null, "Hóspede não encontrado");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao realizar login: " + ex.getMessage());
+                }
             }
         });
+        
 
-        // Adicionando ação do botão de cadastro
+        // Ação do botão de cadastro
         cadastroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CadastroFrame cadastroFrame = new CadastroFrame(); // Abre o frame de cadastro
-                cadastroFrame.setVisible(true); // Torna visível o frame de cadastro
-                setVisible(false); // Apenas esconde o frame de login do hóspede em vez de fechar
+                CadastroFrame cadastroFrame = new CadastroFrame();
+                cadastroFrame.setVisible(true);
+                setVisible(false); // Esconde o frame de login
             }
         });
+    }
+
+    // Método para realizar login via API
+    private void realizarLogin(String email, String senha) {
+        try {
+            // Montando o JSON com as credenciais
+            String jsonInputString = String.format("{\"email\":\"%s\", \"senha\":\"%s\"}", email, senha);
+
+            // Fazendo a requisição POST para a API de login
+            URL url = new URL("http://localhost:8080/api/hospedes/login"); // Ajuste conforme o endpoint correto
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            // Enviando o corpo da requisição (JSON)
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            // Verificando a resposta da API
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Login bem-sucedido, redirecionar para o dashboard
+                JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
+                new DashboardFrame(); // Redireciona para o dashboard
+                dispose(); // Fecha o frame de login
+            } else {
+                // Credenciais inválidas ou erro no login
+                JOptionPane.showMessageDialog(this, "Credenciais incorretas.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao realizar login: " + e.getMessage());
+        }
     }
 }

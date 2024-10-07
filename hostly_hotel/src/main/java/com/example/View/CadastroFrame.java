@@ -98,7 +98,13 @@ public class CadastroFrame extends JFrame {
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
                 JOptionPane.showMessageDialog(this, "Hóspede cadastrado com sucesso!");
-            } else {
+            
+                // Fechar frame de cadastro e abrir o frame de login novamente
+                this.dispose(); // Fecha o frame de cadastro
+                LoginHospedeFrame loginHospedeFrame = new LoginHospedeFrame(); // Reabre o frame de login do hóspede
+                loginHospedeFrame.setVisible(true);
+            }
+             else {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar hóspede. Código de resposta: " + responseCode);
             }
     
@@ -106,6 +112,6 @@ public class CadastroFrame extends JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar hóspede: " + e.getMessage());
         }
-    }
+    }    
     
 }
