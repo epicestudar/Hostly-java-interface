@@ -1,6 +1,7 @@
 package com.example.view;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class CadastroFrame extends JFrame {
+public class HospedeCadastroFrame extends JFrame {
     private JTextField nomeField;
     private JTextField cpfField;
     private JTextField emailField;
@@ -17,7 +18,7 @@ public class CadastroFrame extends JFrame {
     private JTextField senhaField;
     private JTextField dataNascimentoField;
 
-    public CadastroFrame() {
+    public HospedeCadastroFrame() {
         setTitle("Cadastro de Hóspede");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

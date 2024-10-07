@@ -224,7 +224,7 @@ class LoginHospedeFrame extends JFrame {
         cadastroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CadastroFrame cadastroFrame = new CadastroFrame();
+                HospedeCadastroFrame cadastroFrame = new HospedeCadastroFrame();
                 cadastroFrame.setVisible(true);
                 setVisible(false); // Esconde o frame de login
             }

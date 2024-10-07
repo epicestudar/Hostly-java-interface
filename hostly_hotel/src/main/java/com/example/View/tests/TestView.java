@@ -1,4 +1,4 @@
-package com.example.view;
+package com.example.view.tests;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
