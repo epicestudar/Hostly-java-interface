@@ -1,4 +1,4 @@
-package com.example.View;
+package com.example.view;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,8 +8,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.example.Controller.ApiController;
-import com.example.Model.Hospede;
+import com.example.controller.ApiController;
+import com.example.model.Hospede;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -1,9 +1,17 @@
-package com.example.View;
+package com.example.view;
 
 import javax.swing.*;
+
+import com.example.model.Hospede;
+import com.example.view.dashboards.AdminDashboardFrame;
+import com.example.view.dashboards.HospedeDashboard;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -80,16 +88,59 @@ class LoginAdminFrame extends JFrame {
 
         setVisible(true);
 
-        // Adicionando ação do botão de login
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String email = emailField.getText();
                 String senha = new String(senhaField.getPassword());
-                // Lógica de autenticação para o administrador
-                JOptionPane.showMessageDialog(null, "Administrador logado com sucesso!");
+        
+                try {
+                    // Monta o JSON com as credenciais
+                    String jsonInputString = String.format(
+                        "{\"email\":\"%s\", \"senha\":\"%s\"}", email, senha
+                    );
+        
+                    // Fazendo a requisição POST para a API de login
+                    URL url = new URL("http://localhost:8080/api/administrador/login");
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Content-Type", "application/json; utf-8");
+                    con.setDoOutput(true);
+        
+                    // Enviando o corpo da requisição
+                    try (OutputStream os = con.getOutputStream()) {
+                        byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                        os.write(input, 0, input.length);
+                    }
+        
+                    // Verificando a resposta da API
+                    int responseCode = con.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        JOptionPane.showMessageDialog(null, "Administrador logado com sucesso!");
+                        // Aqui você pode redirecionar o administrador para o dashboard
+                        new AdminDashboardFrame();
+                        dispose(); // Fecha o frame atual
+                    } else {
+                        // Ler a resposta do servidor
+                        InputStream is = con.getErrorStream();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+                        reader.close();
+        
+                        JOptionPane.showMessageDialog(null, "Erro: " + response.toString());
+                    }
+        
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao realizar login: " + ex.getMessage());
+                }
             }
         });
+        
     }
 }
 
@@ -154,7 +205,7 @@ class LoginHospedeFrame extends JFrame {
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         JOptionPane.showMessageDialog(null, "Login bem-sucedido!");
                         // Redirecionar para o dashboard ou nova tela
-                        new DashboardFrame(); // Exemplo de redirecionamento para dashboard
+                        new HospedeDashboard();
                         dispose(); // Fecha a tela de login
                     } else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         JOptionPane.showMessageDialog(null, "Credenciais inválidas");
@@ -205,7 +256,7 @@ class LoginHospedeFrame extends JFrame {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Login bem-sucedido, redirecionar para o dashboard
                 JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
-                new DashboardFrame(); // Redireciona para o dashboard
+                new HospedeDashboard(); // Redireciona para o dashboard
                 dispose(); // Fecha o frame de login
             } else {
                 // Credenciais inválidas ou erro no login

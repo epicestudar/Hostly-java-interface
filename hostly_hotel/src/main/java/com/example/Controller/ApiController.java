@@ -1,7 +1,7 @@
-package com.example.Controller;
+package com.example.controller;
 
+import com.example.model.Hospede;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.example.Model.Hospede;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

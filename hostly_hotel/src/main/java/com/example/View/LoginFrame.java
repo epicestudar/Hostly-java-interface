@@ -1,4 +1,4 @@
-package com.example.View;
+package com.example.view;
 
 import javax.swing.*;
 import java.awt.*;
