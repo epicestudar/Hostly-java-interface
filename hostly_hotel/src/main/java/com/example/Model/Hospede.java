@@ -1,6 +1,8 @@
 package com.example.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,4 +26,6 @@ public class Hospede {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  // Formato da data
     private LocalDate dataNascimento;  // Adicionar como LocalDate
+
+    private List<Reserva> reservas = new ArrayList<>();
 }
