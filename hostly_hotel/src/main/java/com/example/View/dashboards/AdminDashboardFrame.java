@@ -118,15 +118,15 @@ public class AdminDashboardFrame extends JFrame {
     }
 
     // Método para listar todos os hóspedes
-    private void listarTodosHospedes() {
-        try {
-            String apiUrl = "http://localhost:8080/api/hospedes";
-            String response = sendGetRequest(apiUrl);
-            atualizarTabelaComResposta(response);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar hóspedes: " + ex.getMessage());
-        }
+private void listarTodosHospedes() {
+    try {
+        String apiUrl = "http://localhost:8080/api/hospedes";
+        String response = sendGetRequest(apiUrl);
+        atualizarTabelaComResposta(response); // Atualiza a JTable com os dados recebidos
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Erro ao listar hóspedes: " + ex.getMessage());
     }
+}
 
     // Método genérico para enviar requisições GET
     private String sendGetRequest(String apiUrl) throws Exception {
