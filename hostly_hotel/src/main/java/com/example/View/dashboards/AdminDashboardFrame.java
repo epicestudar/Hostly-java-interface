@@ -28,8 +28,4 @@ public class AdminDashboardFrame extends JFrame {
         add(tabbedPane);
         setVisible(true);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AdminDashboardFrame());
-    }
 }

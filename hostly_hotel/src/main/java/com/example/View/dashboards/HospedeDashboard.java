@@ -1,18 +1,26 @@
 package com.example.view.dashboards;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import com.example.view.panels.QuartosDisponiveisPanel;
 
 public class HospedeDashboard extends JFrame {
     public HospedeDashboard() {
-        setTitle("Dashboard");
-        setSize(400, 300);
+        setTitle("Painel Administrativo");
+        setSize(800, 600); // Tamanho ajustado para comportar as abas
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JLabel label = new JLabel("Bem-vindo ao Dashboard!", JLabel.CENTER);
-        add(label);
+        // Criando o JTabbedPane para gerenciar abas
+        JTabbedPane tabbedPane = new JTabbedPane();
 
+        // Primeira aba: Gerenciamento de Hóspedes
+        JPanel quartosDisponiveis = new QuartosDisponiveisPanel();
+        tabbedPane.addTab("Quartos Disponíveis", quartosDisponiveis);
+
+        // Adicionando o JTabbedPane à janela
+        add(tabbedPane);
         setVisible(true);
     }
 }
