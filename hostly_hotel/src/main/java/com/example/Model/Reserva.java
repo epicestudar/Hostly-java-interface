@@ -13,7 +13,6 @@ public class Reserva {
     private String id;
     private Quarto codigoQuarto;
     private Hospede cpfHospede; 
-    private String nomeHospede; 
     private Integer quantidadeDiarias; 
     private LocalDate dataCheckIn; 
     private LocalDate dataCheckOut; 

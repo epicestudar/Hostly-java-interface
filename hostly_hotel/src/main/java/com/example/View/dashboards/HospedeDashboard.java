@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import com.example.view.panels.QuartosDisponiveisPanel;
+import com.example.view.panels.SuasReservasPanel;
 
 public class HospedeDashboard extends JFrame {
     public HospedeDashboard() {
@@ -18,6 +19,9 @@ public class HospedeDashboard extends JFrame {
         // Primeira aba: Gerenciamento de Hóspedes
         JPanel quartosDisponiveis = new QuartosDisponiveisPanel();
         tabbedPane.addTab("Quartos Disponíveis", quartosDisponiveis);
+
+        JPanel reservasHospede = new SuasReservasPanel(getName());
+        tabbedPane.addTab("Suas Reservas", reservasHospede);
 
         // Adicionando o JTabbedPane à janela
         add(tabbedPane);
