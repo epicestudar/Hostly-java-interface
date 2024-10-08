@@ -129,35 +129,38 @@ private void abrirPainelDePagamento(String codigoQuarto, String tipoQuarto, int 
     pagamentoDialog.setVisible(true);
 }
 
+
 // Método para realizar a reserva e pagamento
 private void realizarReserva(String codigoQuarto, int diarias, double valorTotal, String metodoPagamento) {
     try {
         // URL da API de reservas
-        String apiUrl = "http://localhost:8080/api/reservas";
+        String apiUrlReserva = "http://localhost:8080/api/reservas";
 
-        // Criando a conexão HTTP
-        HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setDoOutput(true);
+        // Criando a conexão HTTP para a reserva
+        HttpURLConnection conReserva = (HttpURLConnection) new URL(apiUrlReserva).openConnection();
+        conReserva.setRequestMethod("POST");
+        conReserva.setRequestProperty("Content-Type", "application/json");
+        conReserva.setDoOutput(true);
 
         // Criando o JSON da reserva
         JSONObject reservaJson = new JSONObject();
         reservaJson.put("codigoQuarto", codigoQuarto);
         reservaJson.put("quantidadeDiarias", diarias);
         reservaJson.put("valorTotal", valorTotal);
-        reservaJson.put("metodoPagamento", metodoPagamento);
         reservaJson.put("status", "CONFIRMADO"); // Definindo como CONFIRMADO após o pagamento
 
         // Enviando a requisição de reserva
-        try (OutputStream os = con.getOutputStream()) {
+        try (OutputStream os = conReserva.getOutputStream()) {
             byte[] input = reservaJson.toString().getBytes("utf-8");
             os.write(input, 0, input.length);
         }
 
         // Verificando a resposta da API de reservas
-        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            JOptionPane.showMessageDialog(this, "Pagamento realizado com sucesso! Reserva concluída.");
+        if (conReserva.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            JOptionPane.showMessageDialog(this, "Reserva realizada com sucesso!");
+
+            // Agora, enviar os dados do pagamento
+            realizarPagamento(metodoPagamento, valorTotal);
 
             // Atualizar o status do quarto no banco de dados
             atualizarStatusQuarto(codigoQuarto, "RESERVADO");
@@ -165,14 +168,52 @@ private void realizarReserva(String codigoQuarto, int diarias, double valorTotal
             // Atualizar status do quarto na tabela para "RESERVADO" e removê-lo da lista
             removerQuartoDaTabela(tableQuartos.getSelectedRow());
         } else {
-            JOptionPane.showMessageDialog(this, "Erro ao realizar reserva. Código de erro: " + con.getResponseCode());
+            JOptionPane.showMessageDialog(this, "Erro ao realizar reserva. Código de erro: " + conReserva.getResponseCode());
         }
 
-        con.disconnect();
+        conReserva.disconnect();
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao processar a reserva: " + e.getMessage());
     }
 }
+
+// Método para realizar o pagamento
+private void realizarPagamento(String metodoPagamento, double valorTotal) {
+    try {
+        // URL da API de pagamentos
+        String apiUrlPagamento = "http://localhost:8080/api/pagamentos";
+
+        // Criando a conexão HTTP para o pagamento
+        HttpURLConnection conPagamento = (HttpURLConnection) new URL(apiUrlPagamento).openConnection();
+        conPagamento.setRequestMethod("POST");
+        conPagamento.setRequestProperty("Content-Type", "application/json");
+        conPagamento.setDoOutput(true);
+
+        // Criando o JSON do pagamento
+        JSONObject pagamentoJson = new JSONObject();
+        pagamentoJson.put("metodoPagamento", metodoPagamento);
+        pagamentoJson.put("valor", valorTotal);
+
+        // Enviando a requisição de pagamento
+        try (OutputStream os = conPagamento.getOutputStream()) {
+            byte[] input = pagamentoJson.toString().getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        // Verificando a resposta da API de pagamentos
+        if (conPagamento.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            JOptionPane.showMessageDialog(this, "Pagamento realizado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao processar pagamento. Código de erro: " + conPagamento.getResponseCode());
+        }
+
+        conPagamento.disconnect();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao processar o pagamento: " + e.getMessage());
+    }
+}
+
+
 
 // Método para atualizar o status do quarto no banco de dados
 private void atualizarStatusQuarto(String codigoQuarto, String novoStatus) {
