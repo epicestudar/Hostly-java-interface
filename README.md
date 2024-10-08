@@ -214,3 +214,63 @@ flowchart TD
     S -- Não --> D
 
 ```
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Manual do Usuário" alt="Typing SVG" />
+
+### Acesso ao Sistema
+
+1. **Realizar Cadastro (apenas hóspedes realizam cadastro):**
+   - Na tela inicial, clique na opção **"Cadastrar"**.
+   - Preencha todos os campos obrigatórios (nome, CPF, telefone, e-mail e senha) e clique em **"Salvar"**.
+   - Após o cadastro, você receberá uma confirmação de que seu cadastro foi realizado com sucesso.
+
+2. **Fazer Login:**
+   - Após o cadastro, insira seu **e-mail** e **senha** nos campos apropriados.
+   - Clique no botão **"Fazer Login"** para acessar o sistema.
+
+### Para Hóspedes
+
+3. **Visualizar Quartos Disponíveis:**
+   - Após o login, você será direcionado para o sistema de reservas.
+   - Clique na opção **"Ver Quartos Disponíveis"** para listar os quartos que podem ser reservados.
+
+4. **Selecionar Quarto:**
+   - Escolha um quarto da lista para visualizar os detalhes (número, capacidade, preço, etc.).
+   - Clique em **"Solicitar Reserva"** para iniciar o processo de reserva.
+
+5. **Definir Datas de Check-in e Check-out:**
+   - Insira as datas desejadas para check-in e check-out.
+   - Clique em **"Confirmar Reserva"**.
+
+6. **Efetuar Pagamento:**
+   - Escolha um método de pagamento (cartão de crédito, débito, etc.).
+   - Clique em **"Efetuar Pagamento"** para finalizar a reserva.
+   - Você verá uma mensagem de **"Reserva Confirmada"** após a conclusão do pagamento.
+
+7. **Visualizar Reservas:**
+   - Acesse a opção **"Minhas Reservas"** para ver todas as reservas feitas.
+   - Você pode cancelar reservas existentes, se necessário.
+
+8. **Editar Perfil:**
+   - Acesse a opção **"Editar Perfil"** para atualizar suas informações pessoais, como telefone e endereço de e-mail.
+
+### Para Administradores
+
+9. **Acessar Dashboard:**
+   - Após o login, você será direcionado ao **Dashboard de Administração**.
+   - Aqui, você pode gerenciar quartos e hóspedes, além de visualizar reservas.
+
+10. **Cadastrar Novo Quarto:**
+    - Clique em **"Cadastrar Novo Quarto"** e preencha os campos necessários (número, andar, preço, capacidade, etc.).
+    - Clique em **"Salvar"** para adicionar o quarto ao sistema.
+
+11. **Gerenciar Quartos Existentes:**
+    - Acesse a opção **"Gerenciar Quartos"** para visualizar todos os quartos cadastrados.
+    - Você pode editar ou excluir quartos clicando nas opções correspondentes ao lado de cada quarto.
+
+12. **Gerenciar Hóspedes:**
+    - Clique em **"Gerenciar Hóspedes"** para visualizar e gerenciar os dados dos hóspedes.
+    - Você pode cadastrar novos hóspedes, editar informações existentes ou excluir hóspedes.
+
+13. **Visualizar Reservas:**
+    - Acesse **"Visualizar Reservas"** para ver todas as reservas feitas por hóspedes.
+    - Você pode emitir pagamentos e acessar extratos de emissão fiscal.
