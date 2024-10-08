@@ -277,4 +277,5 @@ flowchart TD
     - Você pode emitir pagamentos e acessar extratos de emissão fiscal.
 <br><br><br><br><br>
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Testes Unitários" alt="Typing SVG" />
+
 ### - [Pasta de Testes Unitários](https://github.com/epicestudar/Hostly-spring-API/tree/main/hostly_api/src/main/java/com/example/hostly_api/Testes).
