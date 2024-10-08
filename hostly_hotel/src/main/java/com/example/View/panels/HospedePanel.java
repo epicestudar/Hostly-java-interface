@@ -22,20 +22,29 @@ public class HospedePanel extends JPanel {
     private JButton listAllHospedesButton;
 
     public HospedePanel() {
-        setLayout(new BorderLayout(10, 10)); // Define layout de borda para o painel principal
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Margens ao redor
+        setLayout(new BorderLayout(10, 10));
+        setBackground(new Color(240, 240, 240)); // Cor de fundo
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Painel superior para entrada de dados
-        JPanel inputPanel = new JPanel(new GridLayout(3, 3, 10, 10)); // Layout em grade para labels e campos
+        JPanel inputPanel = new JPanel(new GridLayout(3, 3, 10, 10));
+        inputPanel.setBackground(new Color(240, 240, 240)); // Fundo do painel de entrada
+
+        // Estilo dos rótulos
+        JLabel emailLabel = new JLabel("Procurar por Email:");
+        JLabel cpfLabel = new JLabel("Procurar por CPF:");
+        
+        emailLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        cpfLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
         // Adicionando componentes de input ao painel superior
-        inputPanel.add(new JLabel("Procurar por Email:"));
+        inputPanel.add(emailLabel);
         emailField = new JTextField();
         inputPanel.add(emailField);
         searchByEmailButton = new JButton("Buscar por Email");
         inputPanel.add(searchByEmailButton);
 
-        inputPanel.add(new JLabel("Procurar por CPF:"));
+        inputPanel.add(cpfLabel);
         cpfField = new JTextField();
         inputPanel.add(cpfField);
         searchByCpfButton = new JButton("Buscar por CPF");
@@ -45,15 +54,23 @@ public class HospedePanel extends JPanel {
         listAllHospedesButton = new JButton("Listar Todos os Hóspedes");
         inputPanel.add(listAllHospedesButton);
 
-        add(inputPanel, BorderLayout.NORTH); // Adiciona o painel de entrada ao topo
+        add(inputPanel, BorderLayout.NORTH);
 
         // Configurando a tabela para exibir os hóspedes
         String[] columnNames = {"Nome", "Email", "CPF", "Telefone", "Data de Nascimento"};
-        tableModel = new DefaultTableModel(columnNames, 0); // Criando o modelo da tabela
+        tableModel = new DefaultTableModel(columnNames, 0);
         hospedesTable = new JTable(tableModel);
+        hospedesTable.setFillsViewportHeight(true);
+
+        // Estilo da tabela
+        hospedesTable.setBackground(Color.WHITE);
+        hospedesTable.setGridColor(new Color(200, 200, 200)); // Cor da grade
+        hospedesTable.setRowHeight(25);
+        hospedesTable.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        // Adicionando a barra de rolagem
         JScrollPane scrollPane = new JScrollPane(hospedesTable);
-        hospedesTable.setFillsViewportHeight(true); // Preencher toda a área de visualização da tabela
-        add(scrollPane, BorderLayout.CENTER); // Adiciona a tabela ao centro
+        add(scrollPane, BorderLayout.CENTER);
 
         // Ações dos botões
         searchByEmailButton.addActionListener(new ActionListener() {
@@ -76,6 +93,21 @@ public class HospedePanel extends JPanel {
                 listarTodosHospedes();
             }
         });
+
+        // Estilizando os botões
+        styleButton(searchByEmailButton);
+        styleButton(searchByCpfButton);
+        styleButton(listAllHospedesButton);
+    }
+
+    // Método para estilizar botões
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(100, 149, 237));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Espaçamento interno
+        button.setFocusPainted(false); // Remove o foco
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor de mão
     }
 
     // Método para buscar hóspede por email
@@ -105,7 +137,7 @@ public class HospedePanel extends JPanel {
         try {
             String apiUrl = "http://localhost:8080/api/hospedes";
             String response = sendGetRequest(apiUrl);
-            atualizarTabelaComResposta(response); // Atualiza a JTable com os dados recebidos
+            atualizarTabelaComResposta(response);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao listar hóspedes: " + ex.getMessage());
         }
@@ -134,16 +166,15 @@ public class HospedePanel extends JPanel {
     // Método para atualizar a tabela com a resposta JSON
     private void atualizarTabelaComResposta(String response) {
         try {
-            // Limpa a tabela antes de atualizar
             tableModel.setRowCount(0);
 
-            if (response.startsWith("[")) { // Caso seja uma lista de hóspedes
+            if (response.startsWith("[")) {
                 JSONArray jsonArray = new JSONArray(response);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject hospedeJson = jsonArray.getJSONObject(i);
                     adicionarHospedeNaTabela(hospedeJson);
                 }
-            } else { // Caso seja um único hóspede
+            } else {
                 JSONObject hospedeJson = new JSONObject(response);
                 adicionarHospedeNaTabela(hospedeJson);
             }
@@ -162,7 +193,6 @@ public class HospedePanel extends JPanel {
         String dataNascimento = hospedeJson.optString("dataNascimento", "Não informado");
 
         Object[] rowData = {nome, email, cpf, telefone, dataNascimento};
-        tableModel.addRow(rowData); // Adiciona a linha à tabela
+        tableModel.addRow(rowData);
     }
 }
-

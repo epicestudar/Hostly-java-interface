@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import com.example.test.TipoQuarto;
-
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
@@ -24,11 +24,15 @@ public class CadastroQuartoPanel extends JPanel {
 
     public CadastroQuartoPanel() {
         setLayout(new BorderLayout());
+        setBackground(Color.WHITE); // Definindo um fundo branco para o painel principal
 
         // Parte superior com inputs
-        JPanel inputPanel = new JPanel(new GridLayout(4, 2));
+        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        inputPanel.setBackground(Color.WHITE);
+        inputPanel.setBorder(BorderFactory.createTitledBorder("Cadastro de Quarto")); // Título no painel de entrada
         inputPanel.add(new JLabel("Código do Quarto:"));
         codigoField = new JTextField();
+        codigoField.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // Adicionando borda ao campo
         inputPanel.add(codigoField);
 
         inputPanel.add(new JLabel("Tipo de Quarto:"));
@@ -37,26 +41,47 @@ public class CadastroQuartoPanel extends JPanel {
 
         inputPanel.add(new JLabel("Capacidade do Quarto:"));
         capacidadeField = new JTextField();
+        capacidadeField.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         inputPanel.add(capacidadeField);
 
         inputPanel.add(new JLabel("Valor do Quarto:"));
         valorField = new JTextField();
         valorField.setEditable(false); // Definir como não editável
+        valorField.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         inputPanel.add(valorField);
 
         add(inputPanel, BorderLayout.NORTH);
 
+        // Configuração da tabela
         tableModel = new DefaultTableModel(new Object[] { "ID", "Código", "Tipo", "Capacidade", "Valor", "Status" }, 0);
         quartoTable = new JTable(tableModel);
+        quartoTable.setFillsViewportHeight(true);
+        quartoTable.setSelectionBackground(new Color(173, 216, 230)); // Cor de fundo ao selecionar
+        quartoTable.setRowHeight(25); // Aumentar altura das linhas
+
+        // Personalizando cabeçalho da tabela
+        JTableHeader header = quartoTable.getTableHeader();
+        header.setBackground(new Color(135, 206, 235)); // Cor de fundo do cabeçalho
+        header.setFont(new Font("Arial", Font.BOLD, 14)); // Fonte do cabeçalho
+        header.setForeground(Color.BLACK); // Cor do texto do cabeçalho
 
         JScrollPane scrollPane = new JScrollPane(quartoTable);
         add(scrollPane, BorderLayout.CENTER);
 
         // Botões para ações de editar e deletar
         JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.setBackground(Color.WHITE);
         cadastrarButton = new JButton("Cadastrar Quarto");
         editarButton = new JButton("Editar Quarto");
         deletarButton = new JButton("Deletar Quarto");
+
+        // Estilizando botões
+        cadastrarButton.setBackground(new Color(60, 179, 113)); // Verde
+        editarButton.setBackground(new Color(255, 215, 0)); // Amarelo
+        deletarButton.setBackground(new Color(255, 69, 0)); // Vermelho
+        cadastrarButton.setForeground(Color.WHITE);
+        editarButton.setForeground(Color.WHITE);
+        deletarButton.setForeground(Color.WHITE);
 
         buttonPanel.add(cadastrarButton);
         buttonPanel.add(editarButton);
