@@ -7,20 +7,25 @@ import com.example.view.panels.QuartosDisponiveisPanel;
 import com.example.view.panels.SuasReservasPanel;
 
 public class HospedeDashboard extends JFrame {
-    public HospedeDashboard() {
-        setTitle("Painel Administrativo");
-        setSize(800, 600); // Tamanho ajustado para comportar as abas
+    private String cpfHospede; // Armazenar o CPF do hóspede logado
+
+    public HospedeDashboard(String cpfHospede) {
+        this.cpfHospede = cpfHospede; // Armazena o CPF do hóspede
+
+        setTitle("Painel do Hóspede");
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Criando o JTabbedPane para gerenciar abas
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Primeira aba: Gerenciamento de Hóspedes
-        JPanel quartosDisponiveis = new QuartosDisponiveisPanel();
+        // Primeira aba: Quartos Disponíveis
+        JPanel quartosDisponiveis = new QuartosDisponiveisPanel(cpfHospede);
         tabbedPane.addTab("Quartos Disponíveis", quartosDisponiveis);
 
-        JPanel reservasHospede = new SuasReservasPanel(getName());
+        // Segunda aba: Suas Reservas, passando o CPF para o painel
+        JPanel reservasHospede = new SuasReservasPanel(cpfHospede);
         tabbedPane.addTab("Suas Reservas", reservasHospede);
 
         // Adicionando o JTabbedPane à janela

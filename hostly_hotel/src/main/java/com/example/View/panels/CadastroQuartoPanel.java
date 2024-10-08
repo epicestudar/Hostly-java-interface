@@ -41,6 +41,7 @@ public class CadastroQuartoPanel extends JPanel {
 
         inputPanel.add(new JLabel("Valor do Quarto:"));
         valorField = new JTextField();
+        valorField.setEditable(false); // Definir como não editável
         inputPanel.add(valorField);
 
         add(inputPanel, BorderLayout.NORTH);
@@ -68,16 +69,26 @@ public class CadastroQuartoPanel extends JPanel {
         editarButton.addActionListener(e -> editarQuarto());
         deletarButton.addActionListener(e -> deletarQuarto());
 
+        // Adicionar um ActionListener para atualizar o valor automaticamente
+        tipoBox.addActionListener(e -> atualizarValorQuarto());
+
         // Chama listarQuartos para carregar os quartos ao inicializar o painel
         listarQuartos();
+    }
+
+    private void atualizarValorQuarto() {
+        TipoQuarto tipoSelecionado = (TipoQuarto) tipoBox.getSelectedItem();
+        if (tipoSelecionado != null) {
+            valorField.setText(String.valueOf(tipoSelecionado.getValorDiaria())); // Atualiza o campo de valor
+        }
     }
 
     private void cadastrarQuarto() {
         String codigo = codigoField.getText();
         TipoQuarto tipo = (TipoQuarto) tipoBox.getSelectedItem();
         int capacidade = Integer.parseInt(capacidadeField.getText());
-        double valor = Double.parseDouble(valorField.getText());
-
+        double valor = tipo.getValorDiaria(); // O valor é obtido com base no tipo do quarto
+    
         // Fazer requisição à API para salvar o quarto
         try {
             String apiUrl = "http://localhost:8080/api/quartos";
@@ -85,26 +96,28 @@ public class CadastroQuartoPanel extends JPanel {
             quartoJson.put("codigoQuarto", codigo);
             quartoJson.put("tipoQuarto", tipo.name());
             quartoJson.put("capacidadeQuarto", capacidade);
-            quartoJson.put("valorQuarto", valor);
-
+            quartoJson.put("valorQuarto", valor); // Valor calculado com base no tipo
+    
             HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
             con.getOutputStream().write(quartoJson.toString().getBytes());
-
+    
             if (con.getResponseCode() == 200) {
                 JOptionPane.showMessageDialog(this, "Quarto cadastrado com sucesso!");
                 listarQuartos(); // Atualiza a tabela com os quartos
             } else {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar o quarto.");
             }
-
+    
             con.disconnect();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
         }
     }
+    
+    
 
     // Método para listar quartos
     private void listarQuartos() {
@@ -141,12 +154,12 @@ public class CadastroQuartoPanel extends JPanel {
     private void editarQuarto() {
         int selectedRow = quartoTable.getSelectedRow();
         if (selectedRow != -1) {
-            String id = (String) tableModel.getValueAt(selectedRow, 0); // Agora pegando o ID
+            String id = (String) tableModel.getValueAt(selectedRow, 0);
 
             String codigo = codigoField.getText();
             TipoQuarto tipo = (TipoQuarto) tipoBox.getSelectedItem();
             int capacidade = Integer.parseInt(capacidadeField.getText());
-            double valor = Double.parseDouble(valorField.getText());
+            double valor = tipo.getValorDiaria(); // Valor calculado com base no tipo
 
             // Fazer requisição à API para atualizar o quarto
             try {
@@ -163,7 +176,7 @@ public class CadastroQuartoPanel extends JPanel {
                 con.setDoOutput(true);
                 con.getOutputStream().write(quartoJson.toString().getBytes());
 
-                if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // 200
+                if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     JOptionPane.showMessageDialog(this, "Quarto atualizado com sucesso!");
                     listarQuartos(); // Atualiza a tabela com os quartos
                 } else {

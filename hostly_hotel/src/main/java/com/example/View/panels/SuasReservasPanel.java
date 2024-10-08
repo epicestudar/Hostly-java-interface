@@ -47,7 +47,8 @@ public class SuasReservasPanel extends JPanel {
             HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
             con.setRequestMethod("GET");
 
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String line;
@@ -62,22 +63,27 @@ public class SuasReservasPanel extends JPanel {
 
                 for (int i = 0; i < reservasArray.length(); i++) {
                     JSONObject reservaJson = reservasArray.getJSONObject(i);
-                    String codigoQuarto = reservaJson.getJSONObject("codigoQuarto").getString("codigoQuarto");
-                    String checkIn = reservaJson.getString("dataCheckIn");
-                    String checkOut = reservaJson.getString("dataCheckOut");
-                    int diarias = reservaJson.getInt("quantidadeDiarias");
-                    String status = reservaJson.getString("status");
+
+                    // Verifica se os campos existem e são não nulos
+                    JSONObject quartoJson = reservaJson.getJSONObject("quarto");
+
+                    String codigoQuarto = quartoJson.optString("codigoQuarto", "Não informado");
+                    String checkIn = reservaJson.optString("dataCheckIn", "Não informado");
+                    String checkOut = reservaJson.optString("dataCheckOut", "Não informado");
+                    int diarias = reservaJson.optInt("quantidadeDiarias", 0); // Se o campo for null, retorna 0
+                    String status = reservaJson.optString("status", "Não informado");
 
                     // Adicionar a linha na tabela
                     Object[] rowData = {codigoQuarto, checkIn, checkOut, diarias, status};
                     tableModel.addRow(rowData);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Erro ao listar reservas. Código de erro: " + con.getResponseCode());
+                JOptionPane.showMessageDialog(this, "Erro ao listar reservas. Código de erro: " + responseCode);
             }
             con.disconnect();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao listar reservas: " + e.getMessage());
         }
     }
 }
