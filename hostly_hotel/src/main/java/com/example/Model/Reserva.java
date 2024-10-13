@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 public class Reserva {
     private String id;
-    private Quarto codigoQuarto;
-    private Hospede cpfHospede; 
+    private Quarto quarto;
+    private Hospede hospede; 
     private Integer quantidadeDiarias; 
     private LocalDate dataCheckIn; 
     private LocalDate dataCheckOut; 

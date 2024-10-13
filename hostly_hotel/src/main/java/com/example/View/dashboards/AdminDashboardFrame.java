@@ -1,6 +1,7 @@
 package com.example.view.dashboards;
 
 import com.example.view.panels.CadastroQuartoPanel;
+import com.example.view.panels.GerarRelatorioPanel;
 import com.example.view.panels.HospedePanel;
 import com.example.view.panels.LogoutPanel;
 
@@ -28,6 +29,9 @@ public class AdminDashboardFrame extends JFrame {
         // Terceira aba: Logout
         JPanel logoutPanel = new LogoutPanel();
         tabbedPane.addTab("Sair da Conta", logoutPanel);
+
+        JPanel gerarRelatorioPanel = new GerarRelatorioPanel();
+        tabbedPane.addTab("Relatório de Reservas", gerarRelatorioPanel);
 
         // Adicionando o JTabbedPane à janela
         add(tabbedPane);

@@ -21,7 +21,7 @@ public class Pagamento {
     // Método para calcular o valor total do pagamento
     public Double calcularValorPagamento() {
         // Obter o valor do quarto com base no tipo de quarto
-        Double valorPorDiaria = idReserva.getCodigoQuarto().getTipoQuarto().getValorDiaria();
+        Double valorPorDiaria = idReserva.getQuarto().getTipoQuarto().getValorDiaria();
         Integer quantidadeDiarias = idReserva.getQuantidadeDiarias();
 
         // Calcular e retornar o valor total
