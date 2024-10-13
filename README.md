@@ -1,7 +1,7 @@
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=440&size=22&pause=1000&color=38F77CFF&center=false&vCenter=false&repeat=false&width=435&lines=Contexto do Projeto" alt="Typing SVG" /></a>
 ### Contexto Inicial
 **Gerenciamento de Reservas de Hotel:**
-O sistema será um gerenciamento de reservas de hotel, no qual o administrador poderá cadastrar hóspedes e funcionários, gerenciar reservas e acessar extratos de emissão fiscal, enquanto que o hóspede poderá solicitar a sua reserva em quartos disponíveis e efetuar o pagamento.
+O sistema será um gerenciamento de reservas de hotel, no qual o administrador poderá cadastrar quartos, gerenciar reservas e acessar extratos de emissão fiscal, enquanto que o hóspede poderá solicitar a sua reserva em quartos disponíveis e efetuar o pagamento.
 
 <br>
 <br>
@@ -26,7 +26,7 @@ O sistema será um gerenciamento de reservas de hotel, no qual o administrador p
 
 ### Visão Geral do Projeto
 **Objetivo:**
-Desenvolver um sistema para gerenciamento de reservas de hotel, onde o administrador poderá cadastrar hóspedes e quartos, gerenciar reservas e acessar extratos de emissão fiscal. Hóspedes poderão solicitar reservas em quartos disponíveis e efetuar o pagamento. A aplicação utilizará tecnologias modernas e práticas de mercado, garantindo segurança, escalabilidade e uma experiência de usuário fluida por meio de Java Swing para a interface administrativa e Spring Boot para a API, com MongoDB como banco de dados.
+Desenvolver um sistema para gerenciamento de reservas de hotel, onde o administrador poderá cadastrar quartos, gerenciar reservas e acessar extratos de emissão fiscal. Hóspedes poderão solicitar reservas em quartos disponíveis e efetuar o pagamento. A aplicação utilizará tecnologias modernas e práticas de mercado, garantindo segurança, escalabilidade e uma experiência de usuário fluida por meio de Java Swing para a interface e Spring Boot para a API, com MongoDB como banco de dados.
 
 **Por Que Este Projeto?**
 A nossa empresa chamada Hostly, dedicada a inovar no campo da gestão de serviços, está em processo de criação de um sistema de gerenciamento de reservas de hotel. Este projeto visa proporcionar uma experiência eficiente tanto para os funcionários quanto para os hóspedes, facilitando o processo de reserva e gerenciamento dos quartos. Com o objetivo de transformar a forma como os hotéis gerenciam suas reservas e atendem aos hóspedes, estamos desenvolvendo uma solução tecnológica avançada que ofereça uma interface amigável e funcionalidades robustas.
@@ -45,8 +45,8 @@ O sistema de gerenciamento de reservas será desenvolvido utilizando Spring Boot
 - 1 Especialista em Segurança
 
 **Tecnologias:**
-- **Spring Boot** (API e Interface do Usuário)
-- **Java Swing** (Interface Administrativa)
+- **Spring Boot** (API)
+- **Java Swing** (Interface)
 - **MongoDB** (Banco de Dados)
 - **Git/GitHub** (Controle de Versão)
 
@@ -62,14 +62,14 @@ O sistema de gerenciamento de reservas será desenvolvido utilizando Spring Boot
 ```mermaid
 classDiagram
     class Administrador {
-        +long id_administrador
+        +string id_administrador
         +string email
         +string senha
         +post()
     }
 
     class Hospede {
-        +long id_hospede
+        +string id_hospede
         +string nome
         +date data_nascimento
         +string telefone
@@ -84,7 +84,7 @@ classDiagram
     }
 
     class Quarto {
-        +int id_quarto
+        +string id_quarto
         +string codigo_quarto
         +enum tipo_quarto
         +integer capacidade_quarto
@@ -98,7 +98,7 @@ classDiagram
     }
 
     class Reservas {
-        +long id_reserva
+        +string id_reserva
         +foreignkey codigo_quarto
         +foreignkey cpf_hospede
         +foreignkey nome_hospede
@@ -114,7 +114,7 @@ classDiagram
     }
 
     class Pagamento {
-        +long id_pagamento
+        +string id_pagamento
         +foreignkey id_reserva
         +foreignkey cpf_hospede
         +localdate data_pagamento
