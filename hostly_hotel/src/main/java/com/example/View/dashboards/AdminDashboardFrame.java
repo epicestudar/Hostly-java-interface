@@ -2,6 +2,7 @@ package com.example.view.dashboards;
 
 import com.example.view.panels.CadastroQuartoPanel;
 import com.example.view.panels.HospedePanel;
+import com.example.view.panels.LogoutPanel;
 
 import javax.swing.*;
 
@@ -23,6 +24,10 @@ public class AdminDashboardFrame extends JFrame {
         // Segunda aba: Cadastro de Quartos
         JPanel cadastroQuartoPanel = new CadastroQuartoPanel();
         tabbedPane.addTab("Gerenciar Quartos", cadastroQuartoPanel);
+
+        // Terceira aba: Logout
+        JPanel logoutPanel = new LogoutPanel();
+        tabbedPane.addTab("Sair da Conta", logoutPanel);
 
         // Adicionando o JTabbedPane à janela
         add(tabbedPane);

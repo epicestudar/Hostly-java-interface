@@ -3,6 +3,8 @@ package com.example.view.dashboards;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import com.example.view.panels.LogoutPanel;
 import com.example.view.panels.QuartosDisponiveisPanel;
 import com.example.view.panels.SuasReservasPanel;
 
@@ -27,6 +29,9 @@ public class HospedeDashboard extends JFrame {
         // Segunda aba: Suas Reservas, passando o CPF para o painel
         JPanel reservasHospede = new SuasReservasPanel(cpfHospede);
         tabbedPane.addTab("Suas Reservas", reservasHospede);
+
+         JPanel logoutPanel = new LogoutPanel();
+        tabbedPane.addTab("Sair da Conta", logoutPanel);
 
         // Adicionando o JTabbedPane à janela
         add(tabbedPane);
