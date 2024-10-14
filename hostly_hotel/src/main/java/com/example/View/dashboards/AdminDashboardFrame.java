@@ -26,12 +26,12 @@ public class AdminDashboardFrame extends JFrame {
         JPanel cadastroQuartoPanel = new CadastroQuartoPanel();
         tabbedPane.addTab("Gerenciar Quartos", cadastroQuartoPanel);
 
-        // Terceira aba: Logout
-        JPanel logoutPanel = new LogoutPanel();
-        tabbedPane.addTab("Sair da Conta", logoutPanel);
-
+        // Terceira aba: Emissões Fiscais
         JPanel gerarRelatorioPanel = new GerarRelatorioPanel();
         tabbedPane.addTab("Relatório de Reservas", gerarRelatorioPanel);
+
+        JPanel logoutPanel = new LogoutPanel();
+        tabbedPane.addTab("Sair da Conta", logoutPanel);
 
         // Adicionando o JTabbedPane à janela
         add(tabbedPane);
