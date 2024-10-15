@@ -86,31 +86,53 @@ public class GerarRelatorioPanel extends JPanel {
     private void gerarPDF(Reserva reserva) throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("relatorio_reserva_" + reserva.getId() + ".pdf"));
-
+    
         document.open();
         document.add(new Paragraph("Relatório de Reserva"));
         document.add(new Paragraph("ID: " + reserva.getId()));
+    
+        // Tratar dados do hóspede
+        String nomeHospede = (reserva.getHospede() != null && reserva.getHospede().getNome() != null) 
+                             ? reserva.getHospede().getNome() 
+                             : "Não informado";
+        String cpfHospede = (reserva.getHospede() != null && reserva.getHospede().getCpf() != null) 
+                            ? reserva.getHospede().getCpf() 
+                            : "Não informado";
+    
+        document.add(new Paragraph("Hóspede: " + nomeHospede));
+        document.add(new Paragraph("CPF: " + cpfHospede));
+    
+        // Tratar dados do quarto
+        String codigoQuarto = (reserva.getQuarto() != null && reserva.getQuarto().getCodigoQuarto() != null) 
+                              ? reserva.getQuarto().getCodigoQuarto() 
+                              : "Não informado";
+        String valorQuarto = (reserva.getQuarto() != null && reserva.getQuarto().getValorQuarto() != null) 
+                             ? String.format("R$ %.2f", reserva.getQuarto().getValorQuarto()) 
+                             : "Não informado";
+    
+        document.add(new Paragraph("Quarto: " + codigoQuarto));
+        document.add(new Paragraph("Valor: " + valorQuarto));
+    
+        // Tratar as datas e o status
+        String dataCheckIn = (reserva.getDataCheckIn() != null) 
+                             ? reserva.getDataCheckIn().toString() 
+                             : "Não informado";
+        String dataCheckOut = (reserva.getDataCheckOut() != null) 
+                              ? reserva.getDataCheckOut().toString() 
+                              : "Não informado";
+    
+        document.add(new Paragraph("Data Check-in: " + dataCheckIn));
+        document.add(new Paragraph("Data Check-out: " + dataCheckOut));
+    
+        String status = (reserva.getStatus() != null) 
+                ? reserva.getStatus().name() // Ou use .toString()
+                : "Não informado";
+document.add(new Paragraph("Status: " + status));
 
-        if (reserva.getHospede() != null) {
-            document.add(new Paragraph("Hóspede: " + reserva.getHospede().getNome()));
-            document.add(new Paragraph("CPF: " + reserva.getHospede().getCpf()));
-        } else {
-            document.add(new Paragraph("Hóspede: Não informado"));
-        }
-
-        if (reserva.getQuarto() != null) {
-            document.add(new Paragraph("Quarto: " + reserva.getQuarto().getCodigoQuarto()));
-            document.add(new Paragraph("Valor: R$ " + reserva.getQuarto().getValorQuarto()));
-        } else {
-            document.add(new Paragraph("Quarto: Não informado"));
-        }
-
-        document.add(new Paragraph("Data Check-in: " + reserva.getDataCheckIn()));
-        document.add(new Paragraph("Data Check-out: " + reserva.getDataCheckOut()));
-        document.add(new Paragraph("Status: " + reserva.getStatus()));
-
+    
         document.close();
     }
+    
 
     // Renderizador para exibir o botão corretamente
     private class ButtonRenderer extends JButton implements TableCellRenderer {
