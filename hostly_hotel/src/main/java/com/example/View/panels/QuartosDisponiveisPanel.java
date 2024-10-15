@@ -1,4 +1,5 @@
 package com.example.view.panels;
+
 import java.time.LocalDate;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -132,32 +133,88 @@ public class QuartosDisponiveisPanel extends JPanel {
         pagamentoDialog.setVisible(true);
     }
 
-    // Método para realizar a reserva e pagamento
-private void realizarReserva(String codigoQuarto, int diarias, double valorTotal, String metodoPagamento) {
-    try {
-        // URL da API de reservas
-        String apiUrlReserva = "http://localhost:8080/api/reservas";
+    private JSONObject buscarQuartoPorCodigo(String codigoQuarto) {
+        try {
+            String apiUrl = "http://localhost:8080/api/quartos/codigo/" + codigoQuarto;
+            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            con.setRequestMethod("GET");
 
-        // Criando a conexão HTTP para a reserva
-        HttpURLConnection conReserva = (HttpURLConnection) new URL(apiUrlReserva).openConnection();
-        conReserva.setRequestMethod("POST");
-        conReserva.setRequestProperty("Content-Type", "application/json");
-        conReserva.setDoOutput(true);
-
-        // Montando o JSON da reserva
-        JSONObject reservaJson = new JSONObject();
-        reservaJson.put("quarto", new JSONObject().put("codigoQuarto", codigoQuarto));
-        reservaJson.put("hospede", new JSONObject().put("cpf", cpfHospede)); // Usando o CPF do hóspede logado
-        reservaJson.put("quantidadeDiarias", diarias);
-        reservaJson.put("status", "CONFIRMADO");
-
-        // Enviando a requisição de reserva
-        try (OutputStream os = conReserva.getOutputStream()) {
-            byte[] input = reservaJson.toString().getBytes("utf-8");
-            os.write(input, 0, input.length);
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+                return new JSONObject(response.toString());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar quarto: " + e.getMessage());
         }
+        return null;
+    }
 
-        // Verificando a resposta da API de reservas
+    private JSONObject buscarHospedePorCpf(String cpf) {
+        try {
+            String apiUrl = "http://localhost:8080/api/hospedes/cpf/" + cpf;
+            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            con.setRequestMethod("GET");
+
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+                return new JSONObject(response.toString());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar hóspede: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private void realizarReserva(String codigoQuarto, int diarias, double valorTotal, String metodoPagamento) {
+        try {
+            // Buscar informações completas do quarto pela API
+            JSONObject quartoJson = buscarQuartoPorCodigo(codigoQuarto);
+            if (quartoJson == null) {
+                JOptionPane.showMessageDialog(this, "Erro: Quarto não encontrado.");
+                return;
+            }
+
+            // Buscar informações completas do hóspede pela API
+            JSONObject hospedeJson = buscarHospedePorCpf(cpfHospede);
+            if (hospedeJson == null) {
+                JOptionPane.showMessageDialog(this, "Erro: Hóspede não encontrado.");
+                return;
+            }
+
+            // URL da API de reservas
+            String apiUrlReserva = "http://localhost:8080/api/reservas";
+            HttpURLConnection conReserva = (HttpURLConnection) new URL(apiUrlReserva).openConnection();
+            conReserva.setRequestMethod("POST");
+            conReserva.setRequestProperty("Content-Type", "application/json");
+            conReserva.setDoOutput(true);
+
+            // Montando o JSON da reserva completo
+            JSONObject reservaJson = new JSONObject();
+            reservaJson.put("quarto", quartoJson);
+            reservaJson.put("hospede", hospedeJson);
+            reservaJson.put("quantidadeDiarias", diarias);
+            reservaJson.put("status", "CONFIRMADO");
+            reservaJson.put("dataCheckIn", LocalDate.now().toString()); // Exemplo de data atual
+
+            // Enviar a requisição
+            try (OutputStream os = conReserva.getOutputStream()) {
+                byte[] input = reservaJson.toString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+             // Verificando a resposta da API de reservas
         if (conReserva.getResponseCode() == HttpURLConnection.HTTP_OK) {
             // Lendo a resposta da API para capturar o reservaId
             BufferedReader reader = new BufferedReader(new InputStreamReader(conReserva.getInputStream()));
@@ -191,105 +248,104 @@ private void realizarReserva(String codigoQuarto, int diarias, double valorTotal
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao processar a reserva: " + e.getMessage());
     }
-}
-
-   // Método para realizar o pagamento
-private void realizarPagamento(String metodoPagamento, double valorTotal, String reservaId) {
-    try {
-        // URL da API de pagamentos
-        String apiUrlPagamento = "http://localhost:8080/api/pagamentos";
-
-        // Criando a conexão HTTP para o pagamento
-        HttpURLConnection conPagamento = (HttpURLConnection) new URL(apiUrlPagamento).openConnection();
-        conPagamento.setRequestMethod("POST");
-        conPagamento.setRequestProperty("Content-Type", "application/json");
-        conPagamento.setDoOutput(true);
-
-        // Criando o JSON para a requisição de pagamento
-        JSONObject pagamentoJson = new JSONObject();
-        pagamentoJson.put("reserva", new JSONObject().put("id", reservaId)); // Reserva associada
-        pagamentoJson.put("hospede", new JSONObject().put("cpf", cpfHospede)); // CPF do hóspede
-        pagamentoJson.put("dataPagamento", LocalDate.now().toString()); // Data atual do pagamento
-        pagamentoJson.put("valorPago", valorTotal); // Valor pago
-        pagamentoJson.put("metodoPagamento", metodoPagamento); // Método de pagamento escolhido
-
-        // Enviando a requisição de pagamento;
-        try (OutputStream os = conPagamento.getOutputStream()) {
-            byte[] input = pagamentoJson.toString().getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-
-        // Verificando a resposta da API de pagamentos
-        if (conPagamento.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            JOptionPane.showMessageDialog(this, "Pagamento realizado com sucesso!");
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao processar pagamento. Código de erro: " + conPagamento.getResponseCode());
-        }
-
-        conPagamento.disconnect();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao processar o pagamento: " + e.getMessage());
     }
-}
 
+    // Método para realizar o pagamento
+    private void realizarPagamento(String metodoPagamento, double valorTotal, String reservaId) {
+        try {
+            // URL da API de pagamentos
+            String apiUrlPagamento = "http://localhost:8080/api/pagamentos";
 
-// Método para atualizar o status do quarto no banco de dados
-private void atualizarStatusQuarto(String codigoQuarto, String novoStatus) {
-    try {
-        // URL da API para buscar os dados do quarto pelo código
-        String apiUrlGet = "http://localhost:8080/api/quartos/codigo/" + codigoQuarto;
+            // Criando a conexão HTTP para o pagamento
+            HttpURLConnection conPagamento = (HttpURLConnection) new URL(apiUrlPagamento).openConnection();
+            conPagamento.setRequestMethod("POST");
+            conPagamento.setRequestProperty("Content-Type", "application/json");
+            conPagamento.setDoOutput(true);
 
-        // Criar conexão para GET e buscar dados do quarto atual
-        HttpURLConnection conGet = (HttpURLConnection) new URL(apiUrlGet).openConnection();
-        conGet.setRequestMethod("GET");
+            // Criando o JSON para a requisição de pagamento
+            JSONObject pagamentoJson = new JSONObject();
+            pagamentoJson.put("reserva", new JSONObject().put("id", reservaId)); // Reserva associada
+            pagamentoJson.put("hospede", new JSONObject().put("cpf", cpfHospede)); // CPF do hóspede
+            pagamentoJson.put("dataPagamento", LocalDate.now().toString()); // Data atual do pagamento
+            pagamentoJson.put("valorPago", valorTotal); // Valor pago
+            pagamentoJson.put("metodoPagamento", metodoPagamento); // Método de pagamento escolhido
 
-        if (conGet.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conGet.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            // Parseando o JSON do quarto atual
-            JSONObject quartoJson = new JSONObject(response.toString());
-
-            // Atualizando apenas o status do quarto
-            quartoJson.put("status", novoStatus);
-
-            // Criando a conexão HTTP para o PUT (pelo código do quarto)
-            String apiUrlPut = "http://localhost:8080/api/quartos/codigo/" + codigoQuarto;
-            HttpURLConnection conPut = (HttpURLConnection) new URL(apiUrlPut).openConnection();
-            conPut.setRequestMethod("PUT");
-            conPut.setRequestProperty("Content-Type", "application/json");
-            conPut.setDoOutput(true);
-
-            // Enviando o JSON atualizado para a API
-            try (OutputStream os = conPut.getOutputStream()) {
-                byte[] input = quartoJson.toString().getBytes("utf-8");
+            // Enviando a requisição de pagamento;
+            try (OutputStream os = conPagamento.getOutputStream()) {
+                byte[] input = pagamentoJson.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
 
-            // Verificando a resposta da API para o PUT
-            if (conPut.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Status do quarto atualizado com sucesso.");
+            // Verificando a resposta da API de pagamentos
+            if (conPagamento.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                JOptionPane.showMessageDialog(this, "Pagamento realizado com sucesso!");
             } else {
                 JOptionPane.showMessageDialog(this,
-                        "Erro ao atualizar status do quarto. Código de erro: " + conPut.getResponseCode());
+                        "Erro ao processar pagamento. Código de erro: " + conPagamento.getResponseCode());
             }
 
-            conPut.disconnect();
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao buscar quarto. Código de erro: " + conGet.getResponseCode());
+            conPagamento.disconnect();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao processar o pagamento: " + e.getMessage());
         }
-        conGet.disconnect();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao atualizar status do quarto: " + e.getMessage());
     }
-}
+
+    // Método para atualizar o status do quarto no banco de dados
+    private void atualizarStatusQuarto(String codigoQuarto, String novoStatus) {
+        try {
+            // URL da API para buscar os dados do quarto pelo código
+            String apiUrlGet = "http://localhost:8080/api/quartos/codigo/" + codigoQuarto;
+
+            // Criar conexão para GET e buscar dados do quarto atual
+            HttpURLConnection conGet = (HttpURLConnection) new URL(apiUrlGet).openConnection();
+            conGet.setRequestMethod("GET");
+
+            if (conGet.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conGet.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                // Parseando o JSON do quarto atual
+                JSONObject quartoJson = new JSONObject(response.toString());
+
+                // Atualizando apenas o status do quarto
+                quartoJson.put("status", novoStatus);
+
+                // Criando a conexão HTTP para o PUT (pelo código do quarto)
+                String apiUrlPut = "http://localhost:8080/api/quartos/codigo/" + codigoQuarto;
+                HttpURLConnection conPut = (HttpURLConnection) new URL(apiUrlPut).openConnection();
+                conPut.setRequestMethod("PUT");
+                conPut.setRequestProperty("Content-Type", "application/json");
+                conPut.setDoOutput(true);
+
+                // Enviando o JSON atualizado para a API
+                try (OutputStream os = conPut.getOutputStream()) {
+                    byte[] input = quartoJson.toString().getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                // Verificando a resposta da API para o PUT
+                if (conPut.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    System.out.println("Status do quarto atualizado com sucesso.");
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao atualizar status do quarto. Código de erro: " + conPut.getResponseCode());
+                }
+
+                conPut.disconnect();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao buscar quarto. Código de erro: " + conGet.getResponseCode());
+            }
+            conGet.disconnect();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar status do quarto: " + e.getMessage());
+        }
+    }
 
     // Método para remover o quarto da tabela após a reserva
     private void removerQuartoDaTabela(int selectedRow) {
